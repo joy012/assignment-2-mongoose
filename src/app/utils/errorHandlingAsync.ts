@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from "express";
 
 export const errorHandlingAsync = (
-  handlerFn: (req: Request, res: Response, next: NextFunction) => Promise<void>
+  handlerFn: (req: Request, res: Response, next: NextFunction) => Promise<void>,
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {

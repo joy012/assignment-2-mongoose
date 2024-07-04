@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response } from "express";
 
 export type TGlobalResponseHandler<T> = {
   success: boolean;

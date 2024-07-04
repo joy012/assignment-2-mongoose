@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
-import { errorHandlingAsync } from '../../utils/errorHandlingAsync';
-import { sendResponse } from '../../utils/globalResponseHandler';
-import { OrderService } from './order.service';
-import { orderValidationSchema } from './order.validation';
+import { Request, Response } from "express";
+import { errorHandlingAsync } from "../../utils/errorHandlingAsync";
+import { sendResponse } from "../../utils/globalResponseHandler";
+import { OrderService } from "./order.service";
+import { orderValidationSchema } from "./order.validation";
 
 // Create new order
 const createOrder = errorHandlingAsync(async (req: Request, res: Response) => {
@@ -17,7 +17,7 @@ const createOrder = errorHandlingAsync(async (req: Request, res: Response) => {
     success: true,
     data: result,
     statusCode: 200,
-    message: 'Order created successfully!',
+    message: "Order created successfully!",
   });
 });
 
@@ -30,7 +30,7 @@ const getAllOrders = errorHandlingAsync(async (req: Request, res: Response) => {
     success: true,
     data: orders,
     statusCode: 200,
-    message: 'Orders fetched successfully!',
+    message: "Orders fetched successfully!",
   });
 });
 
@@ -46,9 +46,9 @@ const getOrderByEmail = errorHandlingAsync(
       success: true,
       data: orders,
       statusCode: 200,
-      message: 'Orders fetched successfully for user email!',
+      message: "Orders fetched successfully for user email!",
     });
-  }
+  },
 );
 
 export const OrderController = {

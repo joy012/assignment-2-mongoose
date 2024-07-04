@@ -1,6 +1,6 @@
 # Asiigenment 2 - Simple E-commerce Backend
 
-### Express.js / TypeScript / Mongoose / Zod 
+### Express.js / TypeScript / Mongoose / Zod
 
 First, install the dependencies by rundding this command:
 
@@ -19,6 +19,7 @@ DB_URL= your MongoDB URL to connect with database
 ```
 
 Finally, run the dev server:
+
 ```bash
 npm run dev
 # or
