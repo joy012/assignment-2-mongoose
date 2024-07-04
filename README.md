@@ -2,7 +2,7 @@
 
 ### Express.js / TypeScript / Mongoose / Zod 
 
-First, intall the dependencies by rundding this command:
+First, install the dependencies by rundding this command:
 
 ```bash
 npm install
@@ -15,7 +15,7 @@ Second, create a .env file with this parameter:
 ```bash
 NODE_ENV= development for local server
 PORT= your desire port to run the server
-DB_URL= your MongoDB URL to connet with database
+DB_URL= your MongoDB URL to connect with database
 ```
 
 Finally, run the dev server:
@@ -25,4 +25,4 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:(your port from env)](http://localhost:(your port from env)) with your browser to see the server.
+Open http://localhost:(your port from env) with your browser to see the server.
