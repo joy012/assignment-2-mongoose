@@ -27,7 +27,7 @@ const productInventorySchema = new Schema<TProductInventory>({
   },
 });
 
-const product = new Schema<IProduct>({
+const productSchema = new Schema<IProduct>({
   name: {
     type: String,
     required: [true, 'Product Name is required'],
@@ -60,4 +60,4 @@ const product = new Schema<IProduct>({
   },
 });
 
-export const Product = model<IProduct>('Product', product);
+export const Product = model<IProduct>('Product', productSchema);

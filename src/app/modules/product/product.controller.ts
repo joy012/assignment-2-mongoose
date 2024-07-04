@@ -3,13 +3,16 @@ import { errorHandlingAsync } from '../../utils/errorHandlingAsync';
 import { sendResponse } from '../../utils/globalResponseHandler';
 import { IProduct } from './product.interface';
 import { ProductService } from './product.service';
+import { productValidationSchema } from './product.validation';
 
 // Create a new product
 const createProduct = errorHandlingAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const data = req.body;
+    const productPayload = req.body;
 
-    const result = await ProductService.createProductInDB(data);
+    const parsedPayload = productValidationSchema.parse(productPayload);
+
+    const result = await ProductService.createProductInDB(parsedPayload);
 
     sendResponse({
       data: result,
@@ -91,17 +94,6 @@ const deleteProduct = errorHandlingAsync(
 const searchProduct = errorHandlingAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { searchTerm } = req.query;
-
-    // check if searchTerm not provided and handle response
-    if (!searchTerm) {
-      sendResponse({
-        data: null,
-        message: 'Search term not provided!',
-        statusCode: 400,
-        success: false,
-        res,
-      });
-    }
 
     const products = await ProductService.searchProductFromDB(
       searchTerm as string
