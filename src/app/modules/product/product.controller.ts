@@ -30,8 +30,6 @@ const getAllProducts = errorHandlingAsync(
     // get products from searchTerm query
     const { searchTerm } = req.query;
 
-    console.log({ searchTerm });
-
     if (searchTerm) {
       const matchedProducts = await ProductService.searchProductFromDB(
         searchTerm as string

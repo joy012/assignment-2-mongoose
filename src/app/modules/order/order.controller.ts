@@ -1,28 +1,50 @@
-import { Request, Response } from "express";
-import { errorHandlingAsync } from "../../utils/errorHandlingAsync";
-import { sendResponse } from "../../utils/globalResponseHandler";
-import { OrderService } from "./order.service";
-import { orderValidationSchema } from "./order.validation";
+import { Request, Response } from 'express';
+import { Types } from 'mongoose';
+import { errorHandlingAsync } from '../../utils/errorHandlingAsync';
+import { sendResponse } from '../../utils/globalResponseHandler';
+import { OrderService } from './order.service';
+import { orderValidationSchema } from './order.validation';
 
 // Create new order
 const createOrder = errorHandlingAsync(async (req: Request, res: Response) => {
-  const orderPayload = req.body;
+  const payload = req.body;
 
-  const parsedPayload = orderValidationSchema.parse(orderPayload);
+  const parsedPayload = orderValidationSchema.parse(payload);
 
-  const result = await OrderService.createOrderInDB(parsedPayload);
+  // convert productId to ObjectId to reference the product
+  const newOrder = {
+    ...parsedPayload,
+    productId: new Types.ObjectId(parsedPayload.productId),
+  };
+
+  const result = await OrderService.createOrderInDB(newOrder);
 
   sendResponse({
     res,
     success: true,
     data: result,
     statusCode: 200,
-    message: "Order created successfully!",
+    message: 'Order created successfully!',
   });
 });
 
 // retrive all orders
 const getAllOrders = errorHandlingAsync(async (req: Request, res: Response) => {
+  const { email } = req.query;
+
+  if (email) {
+    const matchedOrder = await OrderService.getOrderByEmail(email as string);
+
+    sendResponse({
+      res,
+      success: true,
+      data: matchedOrder,
+      statusCode: 200,
+      message: 'Orders fetched successfully for user email!',
+    });
+    return;
+  }
+
   const orders = await OrderService.getAllOrdersFromDB();
 
   sendResponse({
@@ -30,29 +52,11 @@ const getAllOrders = errorHandlingAsync(async (req: Request, res: Response) => {
     success: true,
     data: orders,
     statusCode: 200,
-    message: "Orders fetched successfully!",
+    message: 'Orders fetched successfully!',
   });
 });
-
-// get single order by user email query
-const getOrderByEmail = errorHandlingAsync(
-  async (req: Request, res: Response) => {
-    const email = req.query.email as string;
-
-    const orders = await OrderService.getOrderByEmail(email);
-
-    sendResponse({
-      res,
-      success: true,
-      data: orders,
-      statusCode: 200,
-      message: "Orders fetched successfully for user email!",
-    });
-  },
-);
 
 export const OrderController = {
   createOrder,
   getAllOrders,
-  getOrderByEmail,
 };
