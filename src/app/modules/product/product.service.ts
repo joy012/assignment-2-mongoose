@@ -1,5 +1,5 @@
-import { IProduct } from "./product.interface";
-import { Product } from "./product.model";
+import { IProduct } from './product.interface';
+import { Product } from './product.model';
 
 // Create product in DB
 const createProductInDB = async (product: IProduct) => {
@@ -25,7 +25,7 @@ const getAllProductsFromDB = async () => {
 // update a single product fully or partially
 const updateProductInDB = async (
   productID: string,
-  payload: Partial<IProduct>,
+  payload: Partial<IProduct>
 ) => {
   // using findOneAndUpdate and applying new true returns the updated document
   const product = await Product.findOneAndUpdate({ _id: productID }, payload, {
@@ -45,7 +45,7 @@ const deleteProductFromDB = async (productID: string) => {
 // search products by query from DB
 const searchProductFromDB = async (searchTerm: string) => {
   // options i is for case-insensitive search
-  const searchRegex = { $regex: searchTerm, $options: "i" };
+  const searchRegex = { $regex: searchTerm, $options: 'i' };
 
   const products = await Product.find({
     $or: [
@@ -53,7 +53,7 @@ const searchProductFromDB = async (searchTerm: string) => {
       { description: searchRegex },
       { category: searchRegex },
       { tags: searchRegex },
-      { "variants.value": searchRegex },
+      { 'variants.value': searchRegex },
     ],
   });
 

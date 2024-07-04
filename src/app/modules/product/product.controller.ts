@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { errorHandlingAsync } from "../../utils/errorHandlingAsync";
-import { sendResponse } from "../../utils/globalResponseHandler";
-import { IProduct } from "./product.interface";
-import { ProductService } from "./product.service";
-import { productValidationSchema } from "./product.validation";
+import { Request, Response } from 'express';
+import { errorHandlingAsync } from '../../utils/errorHandlingAsync';
+import { sendResponse } from '../../utils/globalResponseHandler';
+import { IProduct } from './product.interface';
+import { ProductService } from './product.service';
+import { productValidationSchema } from './product.validation';
 
 // Create a new product
 const createProduct = errorHandlingAsync(
@@ -16,27 +16,48 @@ const createProduct = errorHandlingAsync(
 
     sendResponse({
       data: result,
-      message: "Product created successfully!",
+      message: 'Product created successfully!',
       statusCode: 200,
       success: true,
       res,
     });
-  },
+  }
 );
 
-// Get all products
+// Get all products or get products by search term
 const getAllProducts = errorHandlingAsync(
   async (req: Request, res: Response) => {
+    // get products from searchTerm query
+    const { searchTerm } = req.query;
+
+    console.log({ searchTerm });
+
+    if (searchTerm) {
+      const matchedProducts = await ProductService.searchProductFromDB(
+        searchTerm as string
+      );
+
+      sendResponse({
+        data: matchedProducts,
+        message: `Products matching search term '${searchTerm}' fetched successfully!`,
+        statusCode: 200,
+        success: true,
+        res,
+      });
+
+      return;
+    }
+
     const products = await ProductService.getAllProductsFromDB();
 
     sendResponse({
       data: products,
-      message: "Products fetched successfully!",
+      message: 'Products fetched successfully!',
       statusCode: 200,
       success: true,
       res,
     });
-  },
+  }
 );
 
 // Get single product
@@ -47,12 +68,12 @@ const getSingleProduct = errorHandlingAsync(
 
     sendResponse({
       data: product,
-      message: "Product fetched successfully!",
+      message: 'Product fetched successfully!',
       statusCode: 200,
       success: true,
       res,
     });
-  },
+  }
 );
 
 // update a single product fully or partially
@@ -65,12 +86,12 @@ const updateProduct = errorHandlingAsync(
 
     sendResponse({
       data: product,
-      message: "Product updated successfully!",
+      message: 'Product updated successfully!',
       statusCode: 200,
       success: true,
       res,
     });
-  },
+  }
 );
 
 // delete a single product
@@ -82,31 +103,12 @@ const deleteProduct = errorHandlingAsync(
 
     sendResponse({
       data: null,
-      message: "Product deleted successfully!",
+      message: 'Product deleted successfully!',
       statusCode: 200,
       success: true,
       res,
     });
-  },
-);
-
-// search product by query
-const searchProduct = errorHandlingAsync(
-  async (req: Request, res: Response) => {
-    const { searchTerm } = req.query;
-
-    const products = await ProductService.searchProductFromDB(
-      searchTerm as string,
-    );
-
-    sendResponse({
-      data: products,
-      message: `Products matching search term '${searchTerm}' fetched successfully!`,
-      statusCode: 200,
-      success: true,
-      res,
-    });
-  },
+  }
 );
 
 export const ProductController = {
@@ -115,5 +117,4 @@ export const ProductController = {
   getSingleProduct,
   updateProduct,
   deleteProduct,
-  searchProduct,
 };
