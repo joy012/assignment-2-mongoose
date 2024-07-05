@@ -1,6 +1,6 @@
-import { Response } from "express";
+import { Response } from 'express';
 
-export type TGlobalResponseHandler<T> = {
+export type TSendResponseProps<T> = {
   success: boolean;
   statusCode: number;
   message: string;
@@ -14,7 +14,7 @@ export const sendResponse = <T>({
   statusCode,
   success,
   res,
-}: TGlobalResponseHandler<T>) => {
+}: TSendResponseProps<T>) => {
   res.status(statusCode).json({
     success,
     message,

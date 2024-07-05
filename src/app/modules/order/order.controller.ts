@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { Types } from 'mongoose';
 import { errorHandlingAsync } from '../../utils/errorHandlingAsync';
-import { sendResponse } from '../../utils/globalResponseHandler';
+import { sendResponse } from '../../utils/sendResponse';
 import { OrderService } from './order.service';
 import { orderValidationSchema } from './order.validation';
 
@@ -11,13 +10,7 @@ const createOrder = errorHandlingAsync(async (req: Request, res: Response) => {
 
   const parsedPayload = orderValidationSchema.parse(payload);
 
-  // convert productId to ObjectId to reference the product
-  const newOrder = {
-    ...parsedPayload,
-    productId: new Types.ObjectId(parsedPayload.productId),
-  };
-
-  const result = await OrderService.createOrderInDB(newOrder);
+  const result = await OrderService.createOrderInDB(parsedPayload);
 
   sendResponse({
     res,

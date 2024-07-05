@@ -1,5 +1,7 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
+import { errorHandlerMiddleware } from './app/middleware/errorHandlerMiddleware';
+import { notFoundMiddleware } from './app/middleware/notFoundMiddleware';
 import router from './app/routes';
 
 const app: Application = express();
@@ -14,12 +16,10 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to the Assignement - 2 Server!');
 });
 
-// not found error handle
-app.use('*', (req: Request, res: Response) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found',
-  });
-});
+// global error handler middleware
+app.use(errorHandlerMiddleware);
+
+// not found error handler middleware
+app.use(notFoundMiddleware);
 
 export default app;

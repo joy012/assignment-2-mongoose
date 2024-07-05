@@ -12,6 +12,10 @@ const createProductInDB = async (product: IProduct) => {
 const getSingleProductFromDB = async (productID: string) => {
   const product = await Product.findById(productID);
 
+  if (!product) {
+    throw new Error('Product not found');
+  }
+
   return product;
 };
 

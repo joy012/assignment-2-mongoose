@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { errorHandlingAsync } from '../../utils/errorHandlingAsync';
-import { sendResponse } from '../../utils/globalResponseHandler';
+import { sendResponse } from '../../utils/sendResponse';
 import { IProduct } from './product.interface';
 import { ProductService } from './product.service';
 import { productValidationSchema } from './product.validation';
